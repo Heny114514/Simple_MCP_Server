@@ -122,18 +122,35 @@ asyncio.run(compare())
 
 ---
 
-### 项目结构
+### 项目结构与文件作用
 
-```
-Simple_MCP_Server/
-├── tools/                      # MCP工具模块
-│   ├── time_series_models.py   # 时间序列模型核心类
-│   └── time_series_tools.py    # MCP工具接口
-├── modules/                    # 公共模块
-├── config.yaml                 # 配置文件
-├── server.py                   # 服务器入口
-└── README.md                   # 说明文档
-```
+| 文件/目录 | 作用 | 说明 |
+| :-------: | :--: | :--: |
+| **核心文件** | | |
+| `server.py` | 服务器入口 | MCP Server启动与配置 |
+| `tools/time_series_models.py` | 模型核心类 | RNN、LSTM、GRU回归模型实现 |
+| `tools/time_series_tools.py` | MCP工具接口 | 6个时间序列预测相关工具 |
+| `config.yaml` | 配置文件 | 服务器配置、日志设置等 |
+| `pyproject.toml` | 依赖管理 | 项目依赖包版本管理 |
+| `setup.py` | 安装脚本 | 项目安装配置 |
+| `README.md` | 项目文档 | 本文档 |
+| `PROJECT_PLAN.md` | 项目计划 | 开发进度与任务清单 |
+| **功能模块** | | |
+| `modules/YA_Common/` | 公共模块 | 配置、日志、MCP客户端等工具 |
+| `modules/YA_Common/utils/` | 工具函数 | 配置读取、日志记录等 |
+| `modules/YA_Common/mcp/` | MCP适配器 | OpenAI适配器等 |
+| **模板文件** | | 可删除 |
+| `core/` | 核心模块 | 模板代码，未使用 |
+| `prompts/` | 提示词模块 | 模板提示词，未使用 |
+| `resources/` | 资源模块 | 模板资源，未使用 |
+| `tools/hello_tool.py` | 示例工具 | 模板工具，未使用 |
+| **文档** | | 可删除 |
+| `docs/` | 开发文档 | MCP开发指南 |
+| **密钥管理** | | 可删除 |
+| `modules/YA_Secrets/` | 密钥管理 | 未使用 |
+| **平台脚本** | | 可删除 |
+| `linux-macos.*.sh` | Linux脚本 | 未使用 |
+| `windows.*.ps1` | Windows脚本 | 未使用 |
 
 ---
 
@@ -161,3 +178,4 @@ Simple_MCP_Server/
 - 使用了 **PyTorch** 深度学习框架
 - 模型评估指标：MSE、RMSE、MAE
 - 支持自定义超参数：epochs、learning_rate、hidden_size、num_layers
+- 符合MCP Server规范，可与Claude等AI助手集成
