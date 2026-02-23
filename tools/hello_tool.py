@@ -19,7 +19,7 @@ async def get_server_config(key: str, default: Any = None) -> Dict[str, Any]:
         Dict[str, Any]: 包含配置项值的字典，例如 {"value": ...}。
     """
     try:
-        from modules.YA_Common.utils.config import get_config
+        from utils.config import get_config
     except ImportError as e:
         raise RuntimeError(f"无法导入配置模块: {e}")
 

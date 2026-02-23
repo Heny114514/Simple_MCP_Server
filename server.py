@@ -9,16 +9,16 @@ from mcp.server.fastmcp import FastMCP
 from mcp.server.sse import SseServerTransport
 from mcp.server import Server
 
-from modules.YA_Common.utils.config import (
+from utils.config import (
     get_server_name,
     is_default_server_name,
     get_transport_type,
     get_config,
 )
-from modules.YA_Common.utils.logger import get_logger
-from modules.YA_Common.utils.middleware import exception_handler
-from modules.YA_Common.utils.security import SecurityMiddleware, HealthCheckMiddleware
-from modules.YA_Common.utils.helpers import print_server_banner
+from utils.logger import get_logger
+from utils.middleware import exception_handler
+from utils.security import SecurityMiddleware, HealthCheckMiddleware
+from utils.helpers import print_server_banner
 from setup import setup
 import tools
 import prompts

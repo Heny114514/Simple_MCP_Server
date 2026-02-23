@@ -6,7 +6,7 @@ from typing import Callable, List, Optional
 from mcp.server.fastmcp import FastMCP
 from mcp.types import Icon
 import pkgutil, importlib
-from modules.YA_Common.utils.logger import get_logger
+from utils.logger import get_logger
 
 logger = get_logger("TimeSeriesMCPServer_Prompts")
 

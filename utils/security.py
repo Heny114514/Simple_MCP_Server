@@ -10,8 +10,8 @@ from typing import Optional
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-from modules.YA_Common.utils.logger import get_logger
-from modules.YA_Common.utils.config import get_config
+from utils.logger import get_logger
+from utils.config import get_config
 
 logger = get_logger("security")
 
