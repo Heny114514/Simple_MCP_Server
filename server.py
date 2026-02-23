@@ -20,6 +20,8 @@ from modules.YA_Common.utils.middleware import exception_handler
 from modules.YA_Common.utils.helpers import print_server_banner
 from setup import setup
 import tools
+import prompts
+import resources
 from starlette.middleware.cors import CORSMiddleware
 
 
@@ -41,6 +43,8 @@ class YA_MCPServer:
         self.app: FastMCP = FastMCP(self.server_name)
 
         tools.register_tools(self.app)
+        prompts.register_prompts(self.app)
+        resources.register_resources(self.app)
 
     def init_logger(self):
         noisy_loggers = [

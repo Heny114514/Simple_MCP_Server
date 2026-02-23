@@ -27,6 +27,7 @@
 | predict_model | 使用训练好的模型进行预测 | data: List[float], model_type | 预测结果 |
 | compare_models | 对比RNN、LSTM、GRU三种模型效果 | data, epochs, sequence_length, hidden_size | 模型对比结果 |
 | get_available_models | 获取当前已训练的模型列表 | 无 | 可用模型列表 |
+| get_server_config | 获取服务器的配置信息 | key, default | 配置值 |
 
 ---
 
@@ -36,6 +37,7 @@
 | :------: | :------: |
 | server_info | 服务器信息 |
 | server_config | 服务器配置信息 |
+| readme | 项目README文档 |
 
 ---
 
@@ -43,35 +45,58 @@
 
 | 指令名称 | 功能描述 |
 | :------: | :------: |
-| hello_prompt | 欢迎提示词 |
+| hello_prompt | 生成一个问候消息 |
 
 ---
 
-### 使用方法
+## 环境配置与运行
 
-#### 1. 环境准备
+### 1. 创建并激活虚拟环境
 
 ```bash
-# 安装依赖
-pip install torch numpy pandas scikit-learn matplotlib
-pip install mcp uvicorn starlette sse-starlette
-pip install colorlog art
+# 创建虚拟环境
+uv venv
+
+# 激活虚拟环境（Windows）
+venv\Scripts\activate
+
+# 激活虚拟环境（Linux/macOS）
+source .venv/bin/activate
 ```
 
-#### 2. 启动MCP Server
+### 2. 安装依赖
 
 ```bash
-# 方式一：SSE模式（推荐）
+# 安装项目依赖
+uv sync
+```
+
+### 3. 运行MCP Server
+
+```bash
+# 默认使用SSE模式启动服务器
+uv run server.py
+
+# 或直接运行
 python server.py
-
-# 或设置端口
-HOST=127.0.0.1 PORT=12345 python server.py
-
-# 方式二：Stdio模式
-python -c "from server import YA_MCPServer; YA_MCPServer().run_stdio()"
 ```
 
-#### 3. 使用MCP工具
+**默认配置**:
+- 地址: `127.0.0.1:12345
+- 传输模式: SSE
+
+### 4. 修改传输模式
+
+如需切换到标准输入输出模式，修改 `config.yaml` 中的 `transport.type`:
+
+```yaml
+transport:
+  type: "stdio"  # 可选值: stdio, sse
+```
+
+---
+
+### 使用MCP工具
 
 **示例：训练LSTM模型**
 
@@ -112,14 +137,6 @@ async def compare():
 asyncio.run(compare())
 ```
 
-#### 4. 在Claude等AI助手中使用
-
-配置MCP Server后，可直接调用以下工具：
-
-- 使用 `train_lstm_model` 训练时间序列预测模型
-- 使用 `compare_models` 对比不同模型效果
-- 使用 `predict_model` 进行预测
-
 ---
 
 ### 项目结构与文件作用
@@ -129,28 +146,17 @@ asyncio.run(compare())
 | **核心文件** | | |
 | `server.py` | 服务器入口 | MCP Server启动与配置 |
 | `tools/time_series_models.py` | 模型核心类 | RNN、LSTM、GRU回归模型实现 |
-| `tools/time_series_tools.py` | MCP工具接口 | 6个时间序列预测相关工具 |
+| `tools/time_series_tools.py` | MCP工具接口 | 时间序列预测相关工具 |
+| `tools/hello_tool.py` | 示例工具 | 获取服务器配置信息 |
+| `resources/hello_resource.py` | 资源文件 | 返回项目README、日志等 |
+| `prompts/hello_prompt.py` | 提示词 | 生成问候消息 |
+| `core/hello_secrets.py` | 密钥示例 | SOPS加密使用示例 |
+| **配置** | | |
 | `config.yaml` | 配置文件 | 服务器配置、日志设置等 |
 | `pyproject.toml` | 依赖管理 | 项目依赖包版本管理 |
-| `setup.py` | 安装脚本 | 项目安装配置 |
-| `README.md` | 项目文档 | 本文档 |
-| `PROJECT_PLAN.md` | 项目计划 | 开发进度与任务清单 |
-| **功能模块** | | |
+| `env.yaml` | 环境变量 | 密钥管理配置 |
+| **公共模块** | | |
 | `modules/YA_Common/` | 公共模块 | 配置、日志、MCP客户端等工具 |
-| `modules/YA_Common/utils/` | 工具函数 | 配置读取、日志记录等 |
-| `modules/YA_Common/mcp/` | MCP适配器 | OpenAI适配器等 |
-| **模板文件** | | 可删除 |
-| `core/` | 核心模块 | 模板代码，未使用 |
-| `prompts/` | 提示词模块 | 模板提示词，未使用 |
-| `resources/` | 资源模块 | 模板资源，未使用 |
-| `tools/hello_tool.py` | 示例工具 | 模板工具，未使用 |
-| **文档** | | 可删除 |
-| `docs/` | 开发文档 | MCP开发指南 |
-| **密钥管理** | | 可删除 |
-| `modules/YA_Secrets/` | 密钥管理 | 未使用 |
-| **平台脚本** | | 可删除 |
-| `linux-macos.*.sh` | Linux脚本 | 未使用 |
-| `windows.*.ps1` | Windows脚本 | 未使用 |
 
 ---
 
