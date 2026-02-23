@@ -1,9 +1,9 @@
 from typing import Any, Dict
 
-from prompts import YA_MCPServer_Prompt
+from prompts import TimeSeriesMCPServer_Prompt
 
 
-@YA_MCPServer_Prompt(
+@TimeSeriesMCPServer_Prompt(
     name="greet_user",
     title="Greeting Prompt",
     description="生成一个问候消息",
@@ -22,4 +22,4 @@ async def hello_prompt(name: str) -> Dict[str, Any]:
             "greeting": "Hello, Alice!"
         }
     """
-    return f"你好，{name}！欢迎使用 YA MCP Server。"
+    return f"你好，{name}！欢迎使用时间序列预测MCP服务器。"

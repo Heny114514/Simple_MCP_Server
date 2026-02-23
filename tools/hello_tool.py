@@ -1,9 +1,9 @@
 from typing import Any, Dict
 
-from tools import YA_MCPServer_Tool
+from tools import TimeSeriesMCPServer_Tool
 
 
-@YA_MCPServer_Tool(
+@TimeSeriesMCPServer_Tool(
     name="get_server_config",
     title="Get Server Config",
     description="获取服务器的配置信息",
@@ -33,7 +33,7 @@ async def get_server_config(key: str, default: Any = None) -> Dict[str, Any]:
         raise RuntimeError(f"获取配置失败: {e}")
 
 
-@YA_MCPServer_Tool(
+@TimeSeriesMCPServer_Tool(
     name="greeting_tool",
     title="Greeting Tool",
     description="A simple tool that returns a greeting message.",

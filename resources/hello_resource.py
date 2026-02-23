@@ -1,9 +1,9 @@
 import os
-from resources import YA_MCPServer_Resource
+from resources import TimeSeriesMCPServer_Resource
 from typing import Any
 
 
-@YA_MCPServer_Resource(
+@TimeSeriesMCPServer_Resource(
     "file:///README.md",  # 资源 URI
     name="readme_file",  # 资源 ID
     title="README.md",  # 资源标题
@@ -26,7 +26,7 @@ def get_readme() -> Any:
         return {"error": "File not found"}
 
 
-@YA_MCPServer_Resource(
+@TimeSeriesMCPServer_Resource(
     "file:///logs/{path}",  # 资源模板 URI
     name="get_server_logs",  # 资源 ID
     title="Get Server Logs",  # 资源标题

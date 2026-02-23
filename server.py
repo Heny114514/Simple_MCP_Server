@@ -25,9 +25,9 @@ import resources
 from starlette.middleware.cors import CORSMiddleware
 
 
-class YA_MCPServer:
+class TimeSeriesMCPServer:
     """
-    YA_MCPServer
+    TimeSeriesMCPServer
 
     封装了 MCP 服务的启动逻辑，支持 stdio 与 SSE 两种传输方式。
     同时暴露 FastMCP 实例（app）供外部扩展。
@@ -135,7 +135,7 @@ class YA_MCPServer:
 
 
 setup()
-mcp_server = YA_MCPServer()
+mcp_server = TimeSeriesMCPServer()
 app = mcp_server.app
 
 if __name__ == "__main__":

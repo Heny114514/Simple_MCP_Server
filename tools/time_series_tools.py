@@ -1,14 +1,14 @@
 from typing import Any, Dict, List, Optional
 import json
 
-from tools import YA_MCPServer_Tool
+from tools import TimeSeriesMCPServer_Tool
 from tools.time_series_models import TimeSeriesModel, create_model
 
 
 MODEL_REGISTRY: Dict[str, TimeSeriesModel] = {}
 
 
-@YA_MCPServer_Tool(
+@TimeSeriesMCPServer_Tool(
     name="train_rnn_model",
     title="Train RNN Model",
     description="训练RNN回归模型，用于时间序列预测",
@@ -54,7 +54,7 @@ async def train_rnn_model(
     }
 
 
-@YA_MCPServer_Tool(
+@TimeSeriesMCPServer_Tool(
     name="train_lstm_model",
     title="Train LSTM Model",
     description="训练LSTM回归模型，用于时间序列预测",
@@ -100,7 +100,7 @@ async def train_lstm_model(
     }
 
 
-@YA_MCPServer_Tool(
+@TimeSeriesMCPServer_Tool(
     name="train_gru_model",
     title="Train GRU Model",
     description="训练GRU回归模型，用于时间序列预测",
@@ -146,7 +146,7 @@ async def train_gru_model(
     }
 
 
-@YA_MCPServer_Tool(
+@TimeSeriesMCPServer_Tool(
     name="predict_model",
     title="Predict with Model",
     description="使用已训练的时间序列模型进行预测",
@@ -181,7 +181,7 @@ async def predict_model(
     }
 
 
-@YA_MCPServer_Tool(
+@TimeSeriesMCPServer_Tool(
     name="compare_models",
     title="Compare Time Series Models",
     description="对比RNN、LSTM、GRU三种模型的预测效果",
@@ -229,7 +229,7 @@ async def compare_models(
     }
 
 
-@YA_MCPServer_Tool(
+@TimeSeriesMCPServer_Tool(
     name="get_available_models",
     title="Get Available Models",
     description="获取当前已训练可用的模型列表",
