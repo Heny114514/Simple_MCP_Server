@@ -17,6 +17,7 @@ from modules.YA_Common.utils.config import (
 )
 from modules.YA_Common.utils.logger import get_logger
 from modules.YA_Common.utils.middleware import exception_handler
+from modules.YA_Common.utils.security import SecurityMiddleware, HealthCheckMiddleware
 from modules.YA_Common.utils.helpers import print_server_banner
 from setup import setup
 import tools
@@ -113,6 +114,12 @@ class TimeSeriesMCPServer:
             allow_methods=["GET", "POST", "OPTIONS"],
             allow_headers=["*"],
         )
+
+        app.add_middleware(HealthCheckMiddleware)
+        
+        security_enabled = get_config("security.enabled", False)
+        if security_enabled:
+            app.add_middleware(SecurityMiddleware)
 
         return app
 
