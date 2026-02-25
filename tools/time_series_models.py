@@ -39,6 +39,7 @@ class LSTMRegressor(nn.Module):
     def forward(self, x):
         out, _ = self.lstm(x)
         out = self.fc(out[:, -1, :])
+        return out
 
 
 class GRURegressor(nn.Module):
@@ -156,9 +157,14 @@ class TimeSeriesModel:
             raise ValueError("Model not trained yet")
 
         normalized_data = self._normalize(data)
-        X, _ = self._create_sequences(normalized_data)
-
-        X = torch.FloatTensor(X).unsqueeze(-1).to(self.device)
+        
+        if len(normalized_data) < self.sequence_length:
+            padding = np.zeros(self.sequence_length - len(normalized_data))
+            input_data = np.concatenate([padding, normalized_data])
+            X = torch.FloatTensor([input_data]).unsqueeze(-1).to(self.device)
+        else:
+            X, _ = self._create_sequences(normalized_data)
+            X = torch.FloatTensor(X).unsqueeze(-1).to(self.device)
 
         self.model.eval()
         with torch.no_grad():
