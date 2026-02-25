@@ -1,9 +1,9 @@
 from typing import Any, Dict
 
-from tools import YA_MCPServer_Tool
+from tools import TimeSeriesMCPServer_Tool
 
 
-@YA_MCPServer_Tool(
+@TimeSeriesMCPServer_Tool(
     name="get_server_config",
     title="Get Server Config",
     description="获取服务器的配置信息",
@@ -19,7 +19,7 @@ async def get_server_config(key: str, default: Any = None) -> Dict[str, Any]:
         Dict[str, Any]: 包含配置项值的字典，例如 {"value": ...}。
     """
     try:
-        from modules.YA_Common.utils.config import get_config
+        from utils.config import get_config
     except ImportError as e:
         raise RuntimeError(f"无法导入配置模块: {e}")
 
@@ -33,7 +33,7 @@ async def get_server_config(key: str, default: Any = None) -> Dict[str, Any]:
         raise RuntimeError(f"获取配置失败: {e}")
 
 
-@YA_MCPServer_Tool(
+@TimeSeriesMCPServer_Tool(
     name="greeting_tool",
     title="Greeting Tool",
     description="A simple tool that returns a greeting message.",

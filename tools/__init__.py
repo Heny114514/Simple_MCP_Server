@@ -6,14 +6,14 @@ from typing import Callable, List, Optional, Any
 from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations, Icon
 import pkgutil, importlib
-from modules.YA_Common.utils.logger import get_logger
+from utils.logger import get_logger
 
-logger = get_logger("YA_MCPServer_Tools")
+logger = get_logger("TimeSeriesMCPServer_Tools")
 
 _TOOL_REGISTRY: List[tuple[Callable, dict]] = []
 
 
-def YA_MCPServer_Tool(
+def TimeSeriesMCPServer_Tool(
     name: Optional[str] = None,
     title: Optional[str] = None,
     description: Optional[str] = None,
@@ -26,7 +26,7 @@ def YA_MCPServer_Tool(
     工具函数装饰器，用于延迟注册到 MCP。
 
     用法：
-        @YA_MCPServer_Tool(name="echo", title="Echo", description="Echo text")
+        @TimeSeriesMCPServer_Tool(name="echo", title="Echo", description="Echo text")
         def echo(text: str) -> str:
             return text
     """

@@ -1,15 +1,26 @@
 server: # 服务器元数据
-  name: YA_MCPServer_Template
-  name_zh: YA MCP 服务器示例
-  author: YA Project
-  description: A simple hello mcp example for MCP Tool.
-  description_zh: MCP Tool 的一个简单示例。
+  name: TimeSeriesMCPServer
+  name_zh: 时间序列预测MCP服务器
+  author: Heny(兰翔) and LovelyFlash(王李超)
+  description: MCP Server for time series prediction using RNN, LSTM, and GRU models.
+  description_zh: 基于RNN、LSTM、GRU模型的时间序列预测MCP服务器。
   version: 0.1.0
 
 transport: # 服务器启动方式配置
   type: "sse" # 可选值: stdio, sse
   host: "127.0.0.1" # 仅在 type 为 sse 时有效，表示监听地址，默认为 0.0.0.0
-  port: 12345 # 仅在 type 为 sse 时有效，表示监听端口，默认为 12345
+  port: 12346 # 仅在 type 为 sse 时有效，表示监听端口，默认为 12345
+
+security: # 安全配置
+  enabled: false # 是否启用安全认证
+  api_key: "your-api-key-here" # API密钥，生产环境请修改
+  ip_whitelist: # IP白名单
+    - "127.0.0.1"
+    - "::1"
+  rate_limit:
+    enabled: true
+    requests_per_minute: 60 # 每分钟最大请求数
+    burst: 10 # 突发限制
 
 logging: # 日志配置
   console:
@@ -22,3 +33,11 @@ logging: # 日志配置
     rotation: "10 MB"
     retention: "7 days"
     compression: "zip"
+
+monitoring: # 监控配置
+  health_check:
+    enabled: true
+    endpoint: "/health" # 健康检查端点
+  metrics:
+    enabled: true
+    endpoint: "/metrics" # 监控指标端点

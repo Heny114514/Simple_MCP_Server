@@ -6,15 +6,14 @@ from typing import Callable, List, Optional
 from mcp.server.fastmcp import FastMCP
 from mcp.types import Icon, Annotations
 import pkgutil, importlib
-from modules.YA_Common.utils.logger import get_logger
+from utils.logger import get_logger
 
-logger = get_logger("YA_MCPServer_Resources")
+logger = get_logger("TimeSeriesMCPServer_Resources")
 
-# 存储 (func, kwargs) 元组
 _RESOURCE_REGISTRY: List[tuple[Callable, dict]] = []
 
 
-def YA_MCPServer_Resource(
+def TimeSeriesMCPServer_Resource(
     uri: Optional[str] = None,
     *,
     name: Optional[str] = None,
@@ -29,14 +28,14 @@ def YA_MCPServer_Resource(
     资源装饰器，用于延迟注册到 MCP。
 
     用法：
-        @YA_MCPServer_Resource("data://my/resource", title="My Resource")
+        @TimeSeriesMCPServer_Resource("data://my/resource", title="My Resource")
         def get_my_resource() -> str:
             return "some content"
     """
 
     def decorator(func: Callable):
         if uri is None:
-            raise ValueError("YA_MCPServer_Resource 需要指定 uri 参数。")
+            raise ValueError("TimeSeriesMCPServer_Resource 需要指定 uri 参数。")
         if not enable:
             return func
         _RESOURCE_REGISTRY.append(
@@ -58,7 +57,7 @@ def YA_MCPServer_Resource(
     if callable(uri):
         func = uri
         raise TypeError(
-            "YA_MCPServer_Resource 必须指定 uri，例如：@YA_MCPServer_Resource('data://example')"
+            "TimeSeriesMCPServer_Resource 必须指定 uri，例如：@TimeSeriesMCPServer_Resource('data://example')"
         )
 
     return decorator

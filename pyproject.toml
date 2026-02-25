@@ -1,7 +1,7 @@
 [project]
-name = "YA_MCPServer_Template"
+name = "Simple_MCP_Server"
 version = "0.1.0"
-description = "YA MCP Server Template"
+description = "Simple MCP Server"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -12,4 +12,9 @@ dependencies = [
     "mcp[cli]>=1.14.0",
     "pyyaml>=6.0.2",
     "ruff>=0.14.4",
+    "torch>=2.0.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "scikit-learn>=1.3.0",
+    "matplotlib>=3.7.0",
 ]

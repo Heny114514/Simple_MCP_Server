@@ -6,14 +6,14 @@ from typing import Callable, List, Optional
 from mcp.server.fastmcp import FastMCP
 from mcp.types import Icon
 import pkgutil, importlib
-from modules.YA_Common.utils.logger import get_logger
+from utils.logger import get_logger
 
-logger = get_logger("YA_MCPServer_Prompts")
+logger = get_logger("TimeSeriesMCPServer_Prompts")
 
 _PROMPT_REGISTRY: List[tuple[Callable, dict]] = []
 
 
-def YA_MCPServer_Prompt(
+def TimeSeriesMCPServer_Prompt(
     name: Optional[str] = None,
     title: Optional[str] = None,
     description: Optional[str] = None,
@@ -24,7 +24,7 @@ def YA_MCPServer_Prompt(
     Prompt 装饰器，用于延迟注册到 MCP。
 
     用法：
-        @YA_MCPServer_Prompt(name="greet", title="Greeting", description="问候语生成")
+        @TimeSeriesMCPServer_Prompt(name="greet", title="Greeting", description="问候语生成")
         def greet_prompt(name: str):
             return f"你好，{name}！"
     """

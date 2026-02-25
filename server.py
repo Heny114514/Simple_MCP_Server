@@ -9,15 +9,16 @@ from mcp.server.fastmcp import FastMCP
 from mcp.server.sse import SseServerTransport
 from mcp.server import Server
 
-from modules.YA_Common.utils.config import (
+from utils.config import (
     get_server_name,
     is_default_server_name,
     get_transport_type,
     get_config,
 )
-from modules.YA_Common.utils.logger import get_logger
-from modules.YA_Common.utils.middleware import exception_handler
-from modules.YA_Common.utils.helpers import print_server_banner
+from utils.logger import get_logger
+from utils.middleware import exception_handler
+from utils.security import SecurityMiddleware, HealthCheckMiddleware
+from utils.helpers import print_server_banner
 from setup import setup
 import tools
 import prompts
@@ -25,9 +26,9 @@ import resources
 from starlette.middleware.cors import CORSMiddleware
 
 
-class YA_MCPServer:
+class TimeSeriesMCPServer:
     """
-    YA_MCPServer
+    TimeSeriesMCPServer
 
     封装了 MCP 服务的启动逻辑，支持 stdio 与 SSE 两种传输方式。
     同时暴露 FastMCP 实例（app）供外部扩展。
@@ -114,6 +115,12 @@ class YA_MCPServer:
             allow_headers=["*"],
         )
 
+        app.add_middleware(HealthCheckMiddleware)
+        
+        security_enabled = get_config("security.enabled", False)
+        if security_enabled:
+            app.add_middleware(SecurityMiddleware)
+
         return app
 
     def start(self):
@@ -135,7 +142,7 @@ class YA_MCPServer:
 
 
 setup()
-mcp_server = YA_MCPServer()
+mcp_server = TimeSeriesMCPServer()
 app = mcp_server.app
 
 if __name__ == "__main__":
