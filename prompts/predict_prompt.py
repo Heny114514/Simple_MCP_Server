@@ -4,28 +4,24 @@ from prompts import TimeSeriesMCPServer_Prompt
 
 
 @TimeSeriesMCPServer_Prompt(
-    name="predict_workflow",
-    title="Predict Workflow Prompt",
-    description="执行时间序列预测的工作流：训练三种模型，选择最佳模型进行预测"
+	name="predict_workflow",
+	title="Predict Workflow Prompt",
+	description="执行时间序列预测的工作流：训练三种模型，选择最佳模型进行预测"
 )
 async def predict_prompt(sequence: List[float], num_predictions: int) -> Dict[str, Any]:
-    """时间序列预测工作流提示。
+	"""当用户需要预测序列时，调用此工作流
+	
+	此提示描述了执行时间序列预测的完整工作流程
 
-    此提示描述了执行时间序列预测的完整工作流程：
-    1. 用户提供历史序列数据和预测点数
-    2. 训练三种不同的模型（RNN、LSTM、GRU）
-    3. 对比三种模型的性能，选择最优模型
-    4. 使用最佳模型进行预测并返回结果
+	Args:
+		sequence (List[float]): 历史时间序列数据列表
+		num_predictions (int): 需要预测的数据点数量
 
-    Args:
-        sequence (List[float]): 历史时间序列数据列表
-        num_predictions (int): 需要预测的数据点数量
+	Returns:
+		Dict[str, Any]: 工作流执行结果，包含预测数据和使用的模型信息
+	"""
 
-    Returns:
-        Dict[str, Any]: 工作流执行结果，包含预测数据和使用的模型信息
-    """
-
-    workflow_steps = f"""
+	workflow_steps = f"""
 请按照以下工作流程执行时间序列预测任务：
 
 **输入数据：**
@@ -58,8 +54,8 @@ async def predict_prompt(sequence: List[float], num_predictions: int) -> Dict[st
 请严格按照上述步骤执行，确保每个工具调用都使用正确的数据参数。
 最终结果应包含预测数据和模型选择理由。
 """
-    return {
-        "workflow_prompt": workflow_steps,
-        "input_sequence": sequence,
-        "num_predictions": num_predictions,
-    }
+	return {
+		"workflow_prompt": workflow_steps,
+		"input_sequence": sequence,
+		"num_predictions": num_predictions,
+	}
