@@ -24,9 +24,6 @@ Simple_MCP_Server/
 ├── resources/           # 资源文件
 ├── core/                # 核心模块
 ├── utils/               # 公共工具
-│   ├── config.py       # 配置管理
-│   ├── logger.py       # 日志
-│   └── security.py    # 安全认证
 │
 ├── examples/            # 示例代码
 │   └── sdk_client.py   # Python SDK
@@ -42,10 +39,7 @@ Simple_MCP_Server/
 ### 1. 安装依赖
 
 ```bash
-# 创建虚拟环境
 uv venv
-
-# 安装依赖
 uv sync
 ```
 
@@ -55,44 +49,196 @@ uv sync
 uv run server.py
 ```
 
-服务器启动后访问 `http://127.0.0.1:12346`
+服务器地址: `http://127.0.0.1:12346`
 
 ---
 
-## 三、可用工具
+## 三、工具详解
 
-### 模型训练
+### 3.1 train_rnn_model
 
-| 工具 | 功能 |
-| :-- | :-- |
-| train_rnn_model | 训练RNN模型 |
-| train_lstm_model | 训练LSTM模型 |
-| train_gru_model | 训练GRU模型 |
+训练RNN回归模型。
 
-### 模型预测
+**参数:**
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+| :-- | :--: | :--: | :-- | :-- |
+| data | List[float] | ✅ | - | 时间序列数据 |
+| epochs | int | - | 100 | 训练轮数 |
+| sequence_length | int | - | 10 | 序列长度 |
+| hidden_size | int | - | 64 | 隐藏层大小 |
+| num_layers | int | - | 1 | 网络层数 |
+| learning_rate | float | - | 0.01 | 学习率 |
 
-| 工具 | 功能 |
-| :-- | :-- |
-| predict_model | 使用训练好的模型预测 |
-| compare_models | 对比三种模型性能 |
-| get_available_models | 查看已训练的模型 |
+**返回:**
+```json
+{
+  "status": "success",
+  "model_type": "rnn",
+  "final_loss": 0.0234,
+  "metrics": {"mse": 0.021, "rmse": 0.145, "mae": 0.112},
+  "sample_predictions": [9.8, 10.2, 10.5],
+  "sample_actuals": [10.0, 10.0, 11.0]
+}
+```
+
+**示例:**
+```python
+# Python SDK
+result = await client.train_rnn_model(
+    data=[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0],
+    epochs=50,
+    sequence_length=3,
+    hidden_size=32
+)
+```
 
 ---
 
-## 四、参数说明
+### 3.2 train_lstm_model
 
-| 参数 | 类型 | 默认值 | 说明 |
-| :-- | :-- | :-- | :-- |
-| data | List[float] | 必填 | 时间序列数据 |
-| epochs | int | 100 | 训练轮数 |
-| sequence_length | int | 10 | 序列长度 |
-| hidden_size | int | 64 | 隐藏层大小 |
-| learning_rate | float | 0.01 | 学习率 |
-| model_type | str | "lstm" | 模型类型 |
+训练LSTM回归模型。参数与返回与RNN相同，适用于长序列预测。
+
+**参数:** 同 train_rnn_model
+
+**示例:**
+```python
+result = await client.train_lstm_model(
+    data=[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0],
+    epochs=100,
+    sequence_length=5,
+    hidden_size=64
+)
+```
 
 ---
 
-## 五、大模型调用配置
+### 3.3 train_gru_model
+
+训练GRU回归模型。参数与返回与RNN相同，参数量较少。
+
+**参数:** 同 train_rnn_model
+
+**示例:**
+```python
+result = await client.train_gru_model(
+    data=[1.0, 2.0, 3.0, 4.0, 5.0],
+    epochs=30,
+    hidden_size=16
+)
+```
+
+---
+
+### 3.4 predict_model
+
+使用已训练的模型进行预测。
+
+**参数:**
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+| :-- | :--: | :--: | :-- | :-- |
+| data | List[float] | ✅ | - | 待预测数据 |
+| model_type | str | - | "lstm" | 模型类型 (rnn/lstm/gru) |
+
+**返回:**
+```json
+{
+  "status": "success",
+  "model_type": "lstm",
+  "predictions": [10.5, 11.2, 12.0],
+  "prediction_count": 3
+}
+```
+
+**错误返回:**
+```json
+{
+  "status": "error",
+  "message": "Model 'lstm' not trained yet. Please train the model first."
+}
+```
+
+**示例:**
+```python
+# 先训练模型
+await client.train_lstm_model(data=[1,2,3,4,5,6,7,8,9,10], epochs=50)
+
+# 预测
+result = await client.predict_model(
+    data=[10.0, 11.0],
+    model_type="lstm"
+)
+```
+
+---
+
+### 3.5 compare_models
+
+对比三种模型的性能，自动选择最佳模型。
+
+**参数:**
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+| :-- | :--: | :--: | :-- | :-- |
+| data | List[float] | ✅ | - | 时间序列数据 |
+| epochs | int | - | 100 | 训练轮数 |
+| sequence_length | int | - | 10 | 序列长度 |
+| hidden_size | int | - | 64 | 隐藏层大小 |
+
+**返回:**
+```json
+{
+  "status": "success",
+  "results": {
+    "rnn": {"mse": 0.031, "rmse": 0.176, "mae": 0.145},
+    "lstm": {"mse": 0.018, "rmse": 0.134, "mae": 0.098},
+    "gru": {"mse": 0.022, "rmse": 0.148, "mae": 0.112}
+  },
+  "best_model": "lstm",
+  "best_mse": 0.018
+}
+```
+
+**示例:**
+```python
+result = await client.compare_models(
+    data=[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0],
+    epochs=100,
+    sequence_length=3
+)
+print(f"最佳模型: {result['best_model']}")  # lstm
+```
+
+---
+
+### 3.6 get_available_models
+
+查看当前已训练的模型列表。
+
+**参数:** 无
+
+**返回:**
+```json
+{
+  "status": "success",
+  "available_models": ["lstm", "gru"],
+  "model_count": 2
+}
+```
+
+---
+
+### 3.7 get_server_config
+
+获取服务器配置。
+
+**参数:**
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+| :-- | :--: | :--: | :-- | :-- |
+| key | str | - | null | 配置键名 |
+| default | Any | - | null | 默认值 |
+
+---
+
+## 四、大模型调用配置
 
 ### Cursor/Cline
 
@@ -134,14 +280,13 @@ async def main():
         
         # 预测
         pred = await client.predict(data=[6,7], model_type="lstm")
-        print(pred)
 
 asyncio.run(main())
 ```
 
 ---
 
-## 六、配置说明
+## 五、配置说明
 
 修改 `config.yaml`:
 
@@ -161,7 +306,7 @@ security:
 
 ---
 
-## 七、算法选择
+## 六、算法选择
 
 | 场景 | 推荐 | 原因 |
 | :-- | :-- | :-- |
