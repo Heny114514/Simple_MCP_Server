@@ -9,7 +9,8 @@ from prompts import TimeSeriesMCPServer_Prompt
     description="生成一个问候消息",
 )
 async def hello_prompt(name: str) -> Dict[str, Any]:
-    """一个简单的问候指令。
+    """当用户发起问候时，调用此prompt。
+    参数name默认为"用户"
 
     Args:
         name (str): 用户的名字。
