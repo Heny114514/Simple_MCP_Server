@@ -2,8 +2,28 @@
 
 基于MCP (Model Context Protocol) 的时间序列预测服务，支持RNN、LSTM、GRU三种深度学习算法。
 
-**作者**: Heny(兰翔)、LovelyFlash(王李超)  
-**课程**: 人工智能引论 25秋
+## 作者: `Heny(兰翔)`、`LovelyFlash(王李超)`
+
+## 课程: `人工智能引论 25秋`
+
+## 工具列表：
+
+### 工具 (Tools)
+- `train_rnn_model` - 训练RNN回归模型
+- `train_lstm_model` - 训练LSTM回归模型
+- `train_gru_model` - 训练GRU回归模型
+- `predict_model` - 使用已训练模型进行预测
+- `compare_models` - 对比三种模型性能并自动选择最佳
+- `get_available_models` - 获取当前已训练可用的模型列表
+- `get_server_config` - 获取服务器配置信息
+
+### 资源 (Resources)
+- `hello_resource` - 示例MCP资源
+
+### 提示词 (Prompts)
+- `greet_user` - 问候语生成提示
+- `predict_workflow` - 时间序列预测完整工作流提示
+
 
 ---
 
