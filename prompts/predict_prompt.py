@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from prompts import TimeSeriesMCPServer_Prompt
 
@@ -6,23 +6,37 @@ from prompts import TimeSeriesMCPServer_Prompt
 @TimeSeriesMCPServer_Prompt(
 	name="predict_workflow",
 	title="Predict Workflow Prompt",
-	description="执行时间序列预测的工作流：训练三种模型，选择最佳模型进行预测"
+	description="执行序列预测的工作流：训练三种模型，选择最佳模型进行预测",
 )
-async def predict_prompt(sequence: List[float], num_predictions: int) -> Dict[str, Any]:
-	"""当用户需要预测序列时，调用此工作流
-	
+async def predict_prompt(sequence: Optional[List[float]] = None, num_predictions: Optional[int] = None) -> Dict[str, Any]:
+	"""只要用户有序列预测相关的需求，必须调用并严格遵守此工作流，如果参数不足则要求用户给出缺失参数
+
 	此提示描述了执行时间序列预测的完整工作流程
 
 	Args:
-		sequence (List[float]): 历史时间序列数据列表
-		num_predictions (int): 需要预测的数据点数量
+		sequence (Optional[List[float]]): 历史时间序列数据列表，如果未提供则会要求用户输入
+		num_predictions (Optional[int]): 需要预测的数据点数量，如果未提供则会要求用户输入
 
 	Returns:
 		Dict[str, Any]: 工作流执行结果，包含预测数据和使用的模型信息
 	"""
 
+	if sequence is None or num_predictions is None:
+		missing_params = []
+		if sequence is None:
+			missing_params.append("历史时间序列数据 (sequence: List[float])")
+		if num_predictions is None:
+			missing_params.append("预测点数 (num_predictions: int)")
+
+		return {
+			"error": "参数不足",
+			"missing_parameters": missing_params,
+			"instruction": "请提供以下缺失参数以执行时间序列预测任务：" + ", ".join(missing_params),
+			"workflow_description": "此工作流将训练三种模型（RNN、LSTM、GRU），比较性能，选择最佳模型进行预测。",
+		}
+
 	workflow_steps = f"""
-请按照以下工作流程执行时间序列预测任务：
+请严格按照以下工作流程执行时间序列预测任务：
 
 **输入数据：**
 - 历史序列: {sequence}
